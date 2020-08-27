@@ -1,4 +1,5 @@
 import * as cdk from '@aws-cdk/core';
+import * as acm from '@aws-cdk/aws-certificatemanager';
 import * as cloudfront from '@aws-cdk/aws-cloudfront';
 import * as origins from '@aws-cdk/aws-cloudfront-origins';
 import * as iam from '@aws-cdk/aws-iam';
@@ -50,9 +51,22 @@ function compile(filename: string): lambda.InlineCode {
   return lambda.Code.fromInline(result.outputText);
 }
 
+export interface CorsProxyStackProps extends cdk.StackProps {
+  domainName?: string,
+}
+
 export class CorsProxyStack extends cdk.Stack {
-  constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps) {
+  constructor(scope: cdk.Construct, id: string, props?: CorsProxyStackProps) {
     super(scope, id, props);
+
+    const domainProps: { certificate?: acm.ICertificate, domainNames?: string[] } = {};
+    if (props?.domainName !== undefined) {
+      domainProps.certificate = new acm.Certificate(this, 'Certificate', {
+        domainName: props?.domainName,
+        validation: acm.CertificateValidation.fromDns(),
+      });
+      domainProps.domainNames = [props?.domainName];
+    }
 
     const code = compile('handler.ts');
     const runtime = lambda.Runtime.NODEJS_12_X;
@@ -87,6 +101,7 @@ export class CorsProxyStack extends cdk.Stack {
           },
         ],
       },
+      ...domainProps,
       priceClass: cloudfront.PriceClass.PRICE_CLASS_100,
     });
   }
