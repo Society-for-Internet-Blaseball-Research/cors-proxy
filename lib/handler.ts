@@ -70,6 +70,9 @@ export const onRequest: CloudFrontRequestHandler = async (event) => {
 export const onResponse: CloudFrontResponseHandler = async (event) => {
   const { request, response } = event.Records[0].cf;
   const headers = addCors(response.headers, request);
+  if (request.uri.startsWith('/events')) {
+    addHeader(headers, 'cache-control', 'no-store, must-revalidate');
+  }
   removeHeader(headers, 'set-cookie');
   removeHeader(headers, 'set-cookie2');
   return response;
