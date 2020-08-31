@@ -85,6 +85,7 @@ export class CorsProxyStack extends cdk.Stack {
         origin: new origins.HttpOrigin('www.blaseball.com'),
         allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
         compress: true,
+        forwardQueryString: true,
         viewerProtocolPolicy: cloudfront.ViewerProtocolPolicy.HTTPS_ONLY,
         edgeLambdas: [
           {
