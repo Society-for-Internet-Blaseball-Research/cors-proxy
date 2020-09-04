@@ -81,7 +81,9 @@ export class CorsProxyStack extends cdk.Stack {
 
     new cloudfront.Distribution(this, 'Distribution', {
       defaultBehavior: {
-        origin: new origins.HttpOrigin('www.blaseball.com'),
+        origin: new origins.HttpOrigin('www.blaseball.com', {
+          readTimeout: cdk.Duration.seconds(60),
+        }),
         allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD_OPTIONS,
         compress: true,
         forwardQueryString: true,
