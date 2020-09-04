@@ -73,7 +73,6 @@ export class CorsProxyStack extends cdk.Stack {
     // https://github.com/aws/aws-cdk/issues/9998
     const role = new iam.Role(this, 'FunctionRole', {
       assumedBy: new iam.ServicePrincipal('lambda.amazonaws.com'),
-      managedPolicies: [iam.ManagedPolicy.fromAwsManagedPolicyName('service-role/AWSLambdaBasicExecutionRole')],
     });
     role.assumeRolePolicy!.addStatements(new iam.PolicyStatement({
       actions: ['sts:AssumeRole'],
