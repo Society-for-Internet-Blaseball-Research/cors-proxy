@@ -79,7 +79,7 @@ export class CorsProxyStack extends cdk.Stack {
       principals: [new iam.ServicePrincipal('edgelambda.amazonaws.com')],
     }));
 
-    new cloudfront.Distribution(this, 'Distribution', {
+    const distribution = new cloudfront.Distribution(this, 'Distribution', {
       defaultBehavior: {
         origin: new origins.HttpOrigin('www.blaseball.com', {
           readTimeout: cdk.Duration.seconds(60),
@@ -106,5 +106,10 @@ export class CorsProxyStack extends cdk.Stack {
       ...domainProps,
       priceClass: cloudfront.PriceClass.PRICE_CLASS_100,
     });
+
+    const cfnDistribution = distribution.node.defaultChild as cloudfront.CfnDistribution;
+    cfnDistribution.addOverride('Properties.DistributionConfig.DefaultCacheBehavior.DefaultTTL', 0);
+    cfnDistribution.addOverride('Properties.DistributionConfig.DefaultCacheBehavior.MaxTTL', 0);
+    cfnDistribution.addOverride('Properties.DistributionConfig.DefaultCacheBehavior.MinTTL', 0);
   }
 }
