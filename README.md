@@ -6,7 +6,7 @@ You can use this proxy to make cross-origin requests. You do not need to request
 
 Replace `www.blaseball.com` in your endpoint URL with `cors-proxy.blaseball-reference.com`, and it should just work.
 
-Endpoints under `/database` and `/events` are supported. Directly accessing the proxy is not supported (requests must have an `Origin` or `X-Requested-With` header).
+Endpoints under `/database` and `/events` are supported, as are `/api/getIdols` and `/api/getTribute`. Directly accessing the proxy is not supported (requests must have an `Origin` or `X-Requested-With` header).
 
 If you are accessing an event source under `/events`, plan to add code to re-open the socket after the connection is closed.
 

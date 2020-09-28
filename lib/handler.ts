@@ -42,7 +42,7 @@ export const onRequest: CloudFrontRequestHandler = async (event) => {
   const { request } = event.Records[0].cf;
 
   if (request.uri === '/') {
-    const body = 'This API enables cross-origin requests to read-only Blaseball endpoints (/database and /events).\n\n'
+    const body = 'This API enables cross-origin requests to read-only Blaseball endpoints (/database, /events, /api/getTribute, and /api/getIdols).\n\n'
           + 'Cookies are disabled and stripped from requests. Redirects are not followed, as they should be\n'
           + 'handled by the browser.\n\n'
           + 'To prevent the use of the proxy for casual browsing, the API requires either the Origin or the\n'
@@ -51,7 +51,7 @@ export const onRequest: CloudFrontRequestHandler = async (event) => {
     return textResponse('200', body);
   }
 
-  if (!['/events', '/database'].some((s) => request.uri.startsWith(s))) {
+  if (!['/events', '/database', '/api/getTribute', '/api/getIdols'].some((s) => request.uri.startsWith(s))) {
     return textResponse('404', '404 Not Found');
   }
 
