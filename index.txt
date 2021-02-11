@@ -1,0 +1,13 @@
+This API enables cross-origin GET requests to read-only Blaseball endpoints:
+
+- /database
+- /events
+- /api/getTribute
+- /api/getIdols
+
+Cookies are disabled and stripped from requests. Redirects are not followed, as they should be
+handled by the browser.
+
+To prevent the use of the proxy for non-cross-origin use, the API requires the Origin header to be
+set. To avoid unnecessary preflight (OPTIONS) requests, it's recommended to not manually set this
+header in your code.
